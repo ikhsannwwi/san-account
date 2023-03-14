@@ -75,6 +75,7 @@
             
             
             
+            @if (auth()->user())
             <li class="sidebar-title">Raise Support</li>
             
             <li
@@ -100,7 +101,6 @@
                 </a>
             </li>
 
-            @if (auth()->user())
                 
             @if (auth()->user()->role_user->role == 'Moderator')
             <li
