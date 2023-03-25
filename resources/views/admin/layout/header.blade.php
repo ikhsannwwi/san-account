@@ -8,8 +8,8 @@
     
     <link rel="stylesheet" href="{{asset('admin/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin/css/main/app-dark.css')}}">
-    <link rel="shortcut icon" href="{{asset('admin/images/logo/favicon.svg')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('admin/images/logo/favicon.png')}}" type="image/png">
+    <link rel="shortcut icon" href="{{asset('images/snow.ico')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('images/snow.ico')}}" type="image/png">
     
 <link rel="stylesheet" href="{{asset('admin/css/shared/iconly.css')}}">
 

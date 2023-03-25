@@ -18,10 +18,11 @@ class viewController extends Controller
         if (auth()->user()) {
             if (auth()->user()->role_user->role == 'Moderator') {
                 # code...
-                $data = account::all();
+                $data = account::orderBy('updated_at','DESC')->get();
             }else if (auth()->user()->role_user->role == 'Pengguna') {
                 # code...
-                $data = account::where('user_id' , '=' , auth()->user()->id)->get();
+                $data = account::where('user_id' , '=' , auth()->user()->id)
+                                    ->orderBy('updated_at','DESC')->get();
             }
 
             return view('admin.data.account', compact(
@@ -34,10 +35,11 @@ class viewController extends Controller
         if (auth()->user()) {
             if (auth()->user()->role_user->role == 'Moderator') {
                 # code...
-                $data = app::all();
+                $data = app::orderBy('updated_at','DESC')->get();
             }else if (auth()->user()->role_user->role == 'Pengguna') {
                 # code...
-                $data = app::where('user_id' , '=' , auth()->user()->id)->get();
+                $data = app::where('user_id' , '=' , auth()->user()->id)
+                    ->orderBy('updated_at','DESC')->get();
             }
 
             return view('admin.data.app', compact(
