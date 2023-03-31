@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\accountController;
 use App\Http\Controllers\admin\appController;
 use App\Http\Controllers\admin\viewController;
+use App\Http\Controllers\frontend\f_appController;
 use App\Http\Controllers\users\role_userController;
 use App\Http\Controllers\users\userController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::get('/', function () {
 });
 
 Route::get('/account',[viewController::class, 'admin_index'])->name('admin_index');
+Route::get('/app/{slug}',[viewController::class, 'app_detail'])->name('app_detail');
 Route::get('/admin/account',[viewController::class, 'admin_account'])->name('admin_account')->middleware('auth');
 Route::get('/admin/app',[viewController::class, 'admin_app'])->name('admin_app')->middleware('auth');
 Route::get('/admin/role-user',[viewController::class, 'admin_role_user'])->name('admin_role_user')->middleware('auth');
@@ -67,6 +69,12 @@ Route::get('/admin/role-user/delete-role-user/{id}',[role_userController::class,
 
 
 
+// -------------------------------------------- Start Frontend App -----------------------------------------------//
+Route::post('/app/insert-app',[f_appController::class, 'insert_app'])->name('insert_app')->middleware('auth');
+Route::get('/app/edit-app/{slug}',[f_appController::class, 'edit_app'])->name('edit_app')->middleware('auth');
+Route::post('/app/update-app/{slug}',[f_appController::class, 'update_app'])->name('update_app')->middleware('auth');
+Route::get('/app/delete-app/{slug}',[f_appController::class, 'delete_app'])->name('delete_app')->middleware('auth');
+// -------------------------------------------- End Frontend App -----------------------------------------------//
 
 
 // -------------------------------------------- Start Admin App -----------------------------------------------//

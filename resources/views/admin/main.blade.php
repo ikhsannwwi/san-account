@@ -1,274 +1,182 @@
 @extends('admin.layout.header')
 
 @section('title')
-    Dashboard
+    Apps
 @endsection
 
 @section('content')
 <div class="page-heading">
-    <h3>Profile Statistics</h3>
+    <h3>Apps</h3>
 </div>
 <div class="page-content">
+    <div class="container">
+        <br/>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <form class="card card-sm" action="account" method="get">
+                        <div class="card-body row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <i class="fas fa-search h4 text-body"></i>
+                            </div>
+                            <!--end of col-->
+                            <div class="col">
+                                <input class="form-control form-control-lg form-control-borderless" name="q" type="search" placeholder="Search topics or keywords">
+                            </div>
+                            <!--end of col-->
+                            <div class="col-md-auto col">
+                                <button class="btn btn-lg btn-success" type="submit">Search</button>
+                            </div>
+                    </form>
+
+                            <!--end of col-->
+                                <div class="col-md-auto col">
+                                    <button class="btn btn-lg btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#inlineForm">
+                                        Tambah App
+                                    </button>
+                                </div>
+
+                                <!--login form Modal -->
+                                <div class="modal fade text-left" id="inlineForm" tabindex="-1" aria-labelledby="myModalLabel33" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel33">App Form </h4>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                </button>
+                                            </div>
+                                            <form action="/app/insert-app" method="post" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <label>Nama App: </label>
+                                                    <div class="form-group">
+                                                        <input type="number" class="d-none" name="user_id" value="{{auth()->user()->id}}">
+                                                        <input name="app" type="text" placeholder="Masukkan Nama App" class="form-control">
+                                                    </div>
+                                                    <label>Foto: </label>
+                                                    <div class="form-group">
+                                                        <input name="foto" type="text" placeholder="Masukkan Foto Berupa URL Contoh (https://abc.com/images/image.png)" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">Close</span>
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary ml-1">
+                                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">Tambah</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            <!--end of col-->
+                        </div>
+                </div>
+                <!--end of col-->
+            </div>
+        </div>  
     <section class="row">
-        <div class="col-12 col-lg-9">
+        <div class="col-12">
             <div class="row">
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
+            @foreach ($data as $row)
+            <div class="col-6 col-lg-3 col-md-6">
+                <div class="card">
                         <div class="card-body px-4 py-4-5">
+                            
                             <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon purple mb-2">
-                                        <i class="iconly-boldShow"></i>
+                                <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-7 d-flex ">
+                                    <a href="app/{{$row->slug}}">
+                                    <div class="stats-icon mb-2">
+                                        <img width="100%" src="{{$row->foto}}" alt="images">
                                     </div>
+                                    </a>
+                                <div class="dropdown text-end">
+                                        <button class="btn dropdown-toggle me-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Edit
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="/app/edit-app/{{$row->slug}}">Edit {{$row->app}}</a>
+                                            <a class="dropdown-item delete" href="#" data-id="{{$row->slug}}" data-title="{{$row->app}}">Delete</a>
+                                        </div>
+                                    </div>
+                                    <a href="app/{{$row->slug}}">
                                 </div>
                                 <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Profile Views</h6>
-                                    <h6 class="font-extrabold mb-0">112.000</h6>
+                                    <h6 class="text-muted font-semibold">{{$row->app}}</h6>
+                                    <h6 class="font-extrabold mb-0">{{$row->account->count()}} Account</h6>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </a>
                 </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-4 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon blue mb-2">
-                                        <i class="iconly-boldProfile"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Followers</h6>
-                                    <h6 class="font-extrabold mb-0">183.000</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-4 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon green mb-2">
-                                        <i class="iconly-boldAdd-User"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Following</h6>
-                                    <h6 class="font-extrabold mb-0">80.000</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body px-4 py-4-5">
-                            <div class="row">
-                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                                    <div class="stats-icon red mb-2">
-                                        <i class="iconly-boldBookmark"></i>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Saved Post</h6>
-                                    <h6 class="font-extrabold mb-0">112</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Profile Visit</h4>
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-profile-visit"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-xl-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Profile Visit</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-primary" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use
-                                                xlink:href="{{asset('admin/images/bootstrap-icons.svg#circle-fill')}}" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">Europe</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <h5 class="mb-0">862</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-europe"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-success" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use
-                                                xlink:href="{{asset('admin/images/bootstrap-icons.svg#circle-fill')}}" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">America</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <h5 class="mb-0">375</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-america"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-danger" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use
-                                                xlink:href="{{asset('admin/images/bootstrap-icons.svg#circle-fill')}}" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">Indonesia</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <h5 class="mb-0">1025</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-indonesia"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-xl-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Latest Comments</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-lg">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Comment</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="col-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-md">
-                                                        <img src="{{asset('admin/images/faces/5.jpg')}}">
-                                                    </div>
-                                                    <p class="font-bold ms-3 mb-0">Si Cantik</p>
-                                                </div>
-                                            </td>
-                                            <td class="col-auto">
-                                                <p class=" mb-0">Congratulations on your graduation!</p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-md">
-                                                        <img src="{{asset('admin/images/faces/2.jpg')}}">
-                                                    </div>
-                                                    <p class="font-bold ms-3 mb-0">Si Ganteng</p>
-                                                </div>
-                                            </td>
-                                            <td class="col-auto">
-                                                <p class=" mb-0">Wow amazing design! Can you make another tutorial for
-                                                    this design?</p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-3">
-            <div class="card">
-                <div class="card-body py-4 px-4">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar avatar-xl">
-                            <img src="{{asset('admin/images/faces/1.jpg')}}" alt="Face 1">
-                        </div>
-                        <div class="ms-3 name">
-                            <h5 class="font-bold">John Duck</h5>
-                            <h6 class="text-muted mb-0">@johnducky</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h4>Recent Messages</h4>
-                </div>
-                <div class="card-content pb-4">
-                    <div class="recent-message d-flex px-4 py-3">
-                        <div class="avatar avatar-lg">
-                            <img src="{{asset('admin/images/faces/4.jpg')}}">
-                        </div>
-                        <div class="name ms-4">
-                            <h5 class="mb-1">Hank Schrader</h5>
-                            <h6 class="text-muted mb-0">@johnducky</h6>
-                        </div>
-                    </div>
-                    <div class="recent-message d-flex px-4 py-3">
-                        <div class="avatar avatar-lg">
-                            <img src="{{asset('admin/images/faces/5.jpg')}}">
-                        </div>
-                        <div class="name ms-4">
-                            <h5 class="mb-1">Dean Winchester</h5>
-                            <h6 class="text-muted mb-0">@imdean</h6>
-                        </div>
-                    </div>
-                    <div class="recent-message d-flex px-4 py-3">
-                        <div class="avatar avatar-lg">
-                            <img src="{{asset('admin/images/faces/1.jpg')}}">
-                        </div>
-                        <div class="name ms-4">
-                            <h5 class="mb-1">John Dodol</h5>
-                            <h6 class="text-muted mb-0">@dodoljohn</h6>
-                        </div>
-                    </div>
-                    <div class="px-4">
-                        <button class='btn btn-block btn-xl btn-outline-primary font-bold mt-3'>Start Conversation</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h4>Visitors Profile</h4>
-                </div>
-                <div class="card-body">
-                    <div id="chart-visitors-profile"></div>
-                </div>
+                    @endforeach
             </div>
         </div>
     </section>
 </div>
+@push('script')
+
+    <script>
+      $('.delete').click(function () {
+          var id = $(this).attr('data-id');
+          var title = $(this).attr('data-title');
+          const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-success',
+              cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+          })
+          swalWithBootstrapButtons.fire({
+            title: 'Yakin?',
+            text: "Kamu akan menghapus data ini dengan Nama " + title + " ",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location = "/app/delete-app/" + id + ""
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Data '+ title +' has been deleted.',
+                'success'
+              )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Data '+ title +' is safe :)',
+                'error'
+              )
+            }
+          })
+          
+      });
+    </script>
+    @endpush
+
+@push('css')
+    <style>
+        .form-control-borderless {
+    border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+    </style>
+@endpush
 @push('script')
 @if (session()->has('success'))
 <script>

@@ -10,8 +10,44 @@ use Illuminate\Http\Request;
 
 class viewController extends Controller
 {
-    public function admin_index(){
-        return view('admin.main');
+    public function admin_index(Request $request){
+        // dd($data);
+        if (!auth()->user()) {
+            # code...
+            return redirect()->route('login')->with('unlogin');
+        }
+
+        if ($request->has('q')) {
+            # code...
+            if (auth()->user()->role_user->role == 'Moderator') {
+                $data = app::orderBy('updated_at','DESC')->where('app','like', '%' . $request->q . '%')->with('account')->get();
+                # code...
+            }else if (auth()->user()->role_user->role == 'Pengguna') {
+                # code...
+                $data = app::orderBy('updated_at','DESC')->where('user_id' , '=' , auth()->user()->id)
+                                ->where('app', 'like', '%' . $request->q . '%')->with('account')->get();
+            }
+        }else {
+            if (auth()->user()->role_user->role == 'Moderator') {
+                $data = app::orderBy('updated_at','DESC')->with('account')->get();
+                    # code...
+                }else if (auth()->user()->role_user->role == 'Pengguna') {
+                # code...
+                $data = app::where('user_id' , '=' , auth()->user()->id)
+                ->orderBy('updated_at','DESC')->with('account')->get();
+            }
+        }
+        return view('admin.main', compact(
+            'data',
+        ));
+    }
+
+    public function app_detail($slug){
+        $data = app::where('slug',$slug)->with('account')->first();
+// dd($data);
+        return view('frontend.app-detail', compact(
+            'data',
+        ));
     }
 
     public function admin_account(){
