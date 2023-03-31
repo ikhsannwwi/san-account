@@ -89,6 +89,42 @@ class userController extends Controller
 
         return redirect()->route('admin_user')->with('success', 'Data Berhasil Ditambahkan');
     }
+    public function insert_user_all(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            // 'foto' => 'required',
+            'role_id' => 'required',
+            'password' => 'required',
+        ]);
+        $data = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'foto' => $request->foto,
+            'role_id' => $request->role_id,
+            'password' => bcrypt($request->password),
+            'remember_token' => Str::random(60) ,
+        ]);
+
+        if (!$data) {
+            # code...
+            return redirect()->route('regist')->with('success', 'Data Berhasil Ditambahkan');
+        }
+        if ($request->hasfile('foto')) {
+            # code...
+            $data->foto = 'default';
+        }
+
+        if($request->hasfile('foto')){
+            $nama_baru = Str::random(5) . '.' . $request->file('foto')->extension();
+            $request->file('foto')->move('images/user/', $nama_baru);
+            $data->foto = $nama_baru;
+            $data->save();
+        }
+        $data->save();
+
+        return redirect()->route('login')->with('success', 'Data Berhasil Ditambahkan');
+    }
     public function edit_user($id)
     {
         if (auth()->user()->role_user->role == 'Moderator') {

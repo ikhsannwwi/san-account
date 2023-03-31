@@ -18,6 +18,16 @@
                             <form class="form" action="/admin/account/insert-account" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
+                                    <div class="col-md-6 col-12 mt-3">
+                                        <div class="form-group">
+                                            <label for="first-name-column">Username<span class="text-secondary">(optional)</span></label>
+                                            <input type="text" id="first-name-column" class="form-control @error('username') is-invalid @enderror"
+                                            placeholder="Masukan Username" name="username">
+                                                @error('username')
+                                                    <span class="invalid-feedback d-block">{{$message}}</span>
+                                                    @enderror 
+                                        </div>
+                                    </div>
                                 <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="first-name-column">Email<span class="text-danger">*</span></label>
@@ -52,6 +62,7 @@
                                                     @enderror 
                                             </div>
                                         </div>
+                                    
                                     <div class="col-md-6 col-12 mt-3">
                                         <div class="form-group">
                                             <label for="first-name-column">Nomor Telepon<span class="text-secondary">(optional)</span></label>

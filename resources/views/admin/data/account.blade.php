@@ -27,6 +27,7 @@
                             <th>Foto</th>
                             <th>App</th>
                             <th>Email</th>
+                            <th>Username</th>
                             <th>Nomor</th>
                             <th>Password</th>
                             @if (auth()->user()->role_user->role == 'Moderator')
@@ -44,6 +45,7 @@
                             <td><img width="30px" class="rounded" src="{{$row->app->foto}}" alt="{{$row->app->app}}"></td>
                             <td>{{$row->app->app}}</td>
                             <td>{{$row->email}}</td>
+                            <td>{{$row->username}}</td>
                             <td>{{$row->nomor}}</td>
                             <td>{{$row->password}}</td>
                             @if (auth()->user()->role_user->role == 'Moderator')

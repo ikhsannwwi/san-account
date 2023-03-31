@@ -51,11 +51,17 @@
                                                     <label>Nama App: </label>
                                                     <div class="form-group">
                                                         <input type="number" class="d-none" name="user_id" value="{{auth()->user()->id}}">
-                                                        <input name="app" type="text" placeholder="Masukkan Nama App" class="form-control">
+                                                        <input name="app" type="text" placeholder="Masukkan Nama App" class="form-control @error('app') is-invalid @enderror">
+                                                        @error('app')
+                                                            <span class="invalid-feedback d-block">{{$message}}</span>
+                                                        @enderror 
                                                     </div>
                                                     <label>Foto: </label>
                                                     <div class="form-group">
-                                                        <input name="foto" type="text" placeholder="Masukkan Foto Berupa URL Contoh (https://abc.com/images/image.png)" class="form-control">
+                                                        <input name="foto" type="text" placeholder="Masukkan Foto Berupa URL Contoh (https://abc.com/images/image.png)" class="form-control @error('foto') is-invalid @enderror">
+                                                        @error('foto')
+                                                            <span class="invalid-feedback d-block">{{$message}}</span>
+                                                        @enderror 
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">

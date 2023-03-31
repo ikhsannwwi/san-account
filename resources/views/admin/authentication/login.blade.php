@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login - SanAccount</title>
+    <title>
+      @if (request()->is('admin/login'))
+      Login
+      @endif
+      @if (request()->is('admin/regist'))
+      Registrasi
+      @endif
+      - SanAccount</title>
 
         <link rel="shortcut icon" href="{{asset('images/snow.ico')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('images/snow.ico')}}" type="image/png">
@@ -31,6 +38,10 @@ background: #eee;
                 class="img-fluid" alt="Phone image">
             </div>
             <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+              @if (request()->is(
+                'admin/login'
+              ))
+                  
               <form action="/admin/login-proses" method="post">
                 @csrf
                 @if('unlogin')
@@ -57,11 +68,11 @@ background: #eee;
                 <div class="d-flex justify-content-around align-items-center mb-4">
                   <!-- Checkbox -->
                   
-                  <a href="#!">Forgot password?</a>
+                  <a href="/admin/regist">Belum Punya Akun?</a>
                 </div>
       
                 <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Masuk</button>
       
                 {{-- <div class="divider d-flex align-items-center my-4">
                   <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
@@ -76,6 +87,71 @@ background: #eee;
                   <i class="fab fa-twitter me-2"></i>Continue with Twitter</a> --}}
       
               </form>
+              @endif
+              @if (request()->is(
+                'admin/regist',
+                ))
+                  
+              <form action="/admin/insert-user" method="post" enctype="multipart/form-data">
+                @csrf
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <input type="text" name="name" id="form1Example13" class="form-control form-control-lg @error('name') is-invalid @enderror" />
+                  <input type="number" name="role_id" value="2" id="form1Example13" class="d-none" />
+                  @error('name')
+                  <span class="invalid-feedback d-block">{{$message}}</span>
+                    @enderror
+                  <label class="form-label" for="form1Example13">Username</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="email" name="email" id="form1Example13" class="form-control form-control-lg @error('email') is-invalid @enderror" />
+                  @error('email')
+                  <span class="invalid-feedback d-block">{{$message}}</span>
+                    @enderror
+                  <label class="form-label" for="form1Example13">Email address</label>
+                </div>
+                
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <input type="password" name="password" id="form1Example23" class="form-control form-control-lg @error('password') is-invalid @enderror" />
+                  @error('password')
+                  <span class="invalid-feedback d-block">{{$message}}</span>
+                  @enderror
+                  <label class="form-label" for="form1Example23">Password</label>
+                </div>
+                
+                <div class="form-outline mb-4">
+                  <input type="file" name="foto" id="form1Example13" class="form-control form-control-lg @error('foto') is-invalid @enderror" />
+                  @error('foto')
+                  <span class="invalid-feedback d-block">{{$message}}</span>
+                    @enderror
+                  <label class="form-label" for="form1Example13">Foto</label>
+                </div>
+                <div class="d-flex justify-content-around align-items-center mb-4">
+                  <!-- Checkbox -->
+                  
+                  <a href="/admin/login">Punya Akun?</a>
+                </div>
+      
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Daftar</button>
+      
+                {{-- <div class="divider d-flex align-items-center my-4">
+                  <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+                </div>
+      
+                <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="#!"
+                  role="button">
+                  <i class="fab fa-facebook-f me-2"></i>Continue with Facebook
+                </a>
+                <a class="btn btn-primary btn-lg btn-block" style="background-color: #55acee" href="#!"
+                  role="button">
+                  <i class="fab fa-twitter me-2"></i>Continue with Twitter</a> --}}
+      
+              </form>
+              @endif
+
             </div>
           </div>
         </div>

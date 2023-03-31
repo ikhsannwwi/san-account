@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\account;
 use App\Models\app;
 use App\Models\role_user;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class viewController extends Controller
@@ -44,9 +45,19 @@ class viewController extends Controller
 
     public function app_detail($slug){
         $data = app::where('slug',$slug)->with('account')->first();
+
+        if(auth()->user()->role_user->role == 'Moderator'){
+            $data_app = app::all();
+            $data_user = User::all();
+        } else if(auth()->user()->role_user->role == 'Pengguna'){
+            $data_app = app::where('user_id','=' ,auth()->user()->id)->get();
+            $data_user = User::where('id','=' ,auth()->user()->id)->get();
+        }
 // dd($data);
         return view('frontend.app-detail', compact(
             'data',
+            'data_app',
+            'data_user',
         ));
     }
 
