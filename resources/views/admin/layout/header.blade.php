@@ -66,8 +66,11 @@
             <li class="sidebar-title">Menu</li>
             
             <li
-                class="sidebar-item {{request()->is('account') ? 'active' : ''}} ">
-                <a href="/account" class='sidebar-link'>
+            
+                class="sidebar-item {{request()->is(
+                    'app',
+                ) ? 'active' : ''}} @stack('active_app')">
+                <a href="/app" class='sidebar-link'>
                     <i class="bi bi-grid-fill"></i>
                     <span>App</span>
                 </a>

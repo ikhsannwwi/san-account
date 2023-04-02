@@ -3,7 +3,12 @@
 @section('title')
     Edit Account
 @endsection
-
+@push('active_app')
+    
+    {{request()->is(
+                    'account/edit-account/'.$data->app->slug .'/'. $data->id,
+                ) ? 'active' : ''}}
+@endpush
 @section('content')
     <!-- // Basic multiple Column Form section start -->
     <section id="multiple-column-form">
@@ -45,7 +50,7 @@
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
                                             <label for="first-name-column">Password<span class="text-danger">*</span></label>
-                                            <input type="password" value="{{$data->password}}" id="first-name-column" class="form-control @error('password') is-invalid @enderror"
+                                            <input type="text" value="{{$data->password}}" id="first-name-column" class="form-control @error('password') is-invalid @enderror"
                                                 placeholder="Masukan Title Banner" name="password">
                                                 @error('password')
                                                     <span class="invalid-feedback d-block">{{$message}}</span>

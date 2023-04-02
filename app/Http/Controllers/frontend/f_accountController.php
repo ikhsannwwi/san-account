@@ -64,7 +64,7 @@ class f_accountController extends Controller
 
         $data->save();
 
-        return redirect()->route('admin_index',$dataa->slug)->with('success','Data Berhasil Diupdate');
+        return redirect()->route('app_detail',$dataa->slug)->with('success','Data Berhasil Diupdate');
     }
 
     public function f_delete_account($id){

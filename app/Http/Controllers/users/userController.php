@@ -37,7 +37,7 @@ class userController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->intended('/admin/account')->with('success','Berhasil Validasi Login');
+            return redirect()->intended('/app')->with('success','Berhasil Validasi Login');
         }
         
         return back()->withErrors([
@@ -48,7 +48,7 @@ class userController extends Controller
 
     public function logout(){
         Auth::logout();
-        return redirect('/account');
+        return redirect('/');
     }
 
     public function add_user()

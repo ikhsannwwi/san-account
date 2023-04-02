@@ -3,7 +3,12 @@
 @section('title')
     Detail App
 @endsection
-
+@push('active_app')
+    
+    {{request()->is(
+                    'app/'.$data->slug,
+                ) ? 'active' : ''}}
+@endpush
 @section('content')
 <div class="page-heading">
     <h3>Detail App</h3>

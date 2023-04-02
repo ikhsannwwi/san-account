@@ -29,7 +29,7 @@ Route::get('/',[lp_viewController::class, 'index'])->name('index');
 
 
 
-Route::get('/account',[viewController::class, 'admin_index'])->name('admin_index');
+Route::get('/app',[viewController::class, 'admin_index'])->name('admin_index');
 Route::get('/app/{slug}',[viewController::class, 'app_detail'])->name('app_detail');
 Route::get('/admin/account',[viewController::class, 'admin_account'])->name('admin_account')->middleware('auth');
 Route::get('/admin/app',[viewController::class, 'admin_app'])->name('admin_app')->middleware('auth');
