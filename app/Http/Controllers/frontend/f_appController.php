@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class f_appController extends Controller
 {
-    public function insert_app(Request $request){
+    public function f_insert_app(Request $request){
         $request->validate([
             'app' => 'required',
             'foto' => 'required',
@@ -19,7 +19,7 @@ class f_appController extends Controller
         return redirect()->route('admin_index')->with('success', 'Data Berhasil Ditambakan');
     }
 
-    public function edit_app($slug){
+    public function f_edit_app($slug){
         if (!auth()->user()) {
             return redirect()->route('admin_index')->with('error', ' Anda Tidak Ada Session');
         }
@@ -34,7 +34,7 @@ class f_appController extends Controller
         ));
     }
 
-    public function update_app(Request $request,$slug){
+    public function f_update_app(Request $request,$slug){
         $request->validate([
             'app' => 'required',
             'foto' => 'required',
@@ -49,7 +49,7 @@ class f_appController extends Controller
         return redirect()->route('admin_index')->with('success','Data Berhasil Diupdate');
     }
 
-    public function delete_app($slug){
+    public function f_delete_app($slug){
         $data = app::where('slug',$slug)->first();
         if(auth()->user()->role_user->role == 'Moderator'){
             $data->delete();

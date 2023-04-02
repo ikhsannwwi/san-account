@@ -78,18 +78,19 @@ Route::get('/admin/role-user/delete-role-user/{id}',[role_userController::class,
 
 
 // -------------------------------------------- Start Frontend App -----------------------------------------------//
-Route::post('/account/insert-account',[f_accountController::class, 'insert_account'])->name('insert_account')->middleware('auth');
-Route::get('/account/edit-account/{slug}',[f_accountController::class, 'edit_account'])->name('edit_account')->middleware('auth');
-Route::post('/account/update-account/{slug}',[f_accountController::class, 'update_account'])->name('update_account')->middleware('auth');
-Route::get('/account/delete-account/{slug}',[f_accountController::class, 'delete_account'])->name('delete_account')->middleware('auth');
+Route::post('/account/insert-account/{slug}',[f_accountController::class, 'f_insert_account'])->name('f_insert_account')->middleware('auth');
+Route::get('/account/edit-account/{slug}/{id}',[f_accountController::class, 'f_edit_account'])->name('edit_account')->middleware('auth');
+Route::post('/account/update-account/{slug}/{id}',[f_accountController::class, 'f_update_account'])->name('f_update_account')->middleware('auth');
+Route::get('/account/delete-account/{id}',[f_accountController::class, 'f_delete_account'])->name('f_delete_account')->middleware('auth');
 // -------------------------------------------- End Frontend App -----------------------------------------------//
 
 
 // -------------------------------------------- Start Frontend App -----------------------------------------------//
-Route::post('/app/insert-app',[f_appController::class, 'insert_app'])->name('insert_app')->middleware('auth');
-Route::get('/app/edit-app/{slug}',[f_appController::class, 'edit_app'])->name('edit_app')->middleware('auth');
-Route::post('/app/update-app/{slug}',[f_appController::class, 'update_app'])->name('update_app')->middleware('auth');
-Route::get('/app/delete-app/{slug}',[f_appController::class, 'delete_app'])->name('delete_app')->middleware('auth');
+Route::post('/app/insert-app',[f_appController::class, 'f_insert_app'])->name('f_insert_app')->middleware('auth');
+Route::get('/app/edit-app/{slug}',[f_appController::class, 'f_edit_app'])->name('f_edit_app')->middleware('auth');
+// Route::get('/account/edit-account/{slug}/{id}',[f_appController::class, 'f_edit_app'])->name('f_edit_app')->middleware('auth');
+Route::post('/app/update-app/{slug}',[f_appController::class, 'f_update_app'])->name('f_update_app')->middleware('auth');
+Route::get('/app/delete-app/{slug}',[f_appController::class, 'f_delete_app'])->name('f_delete_app')->middleware('auth');
 // -------------------------------------------- End Frontend App -----------------------------------------------//
 
 

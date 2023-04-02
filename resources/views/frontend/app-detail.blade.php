@@ -71,12 +71,15 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                                     </button>
                                                 </div>
-                                                <form action="/account/insert-account" method="post" enctype="multipart/form-data">
+                                                <form action="/account/insert-account/{{$data->slug}}" method="post" enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="modal-body">
                                                         <label>Username: </label>
                                                         <div class="form-group">
+                                                            @if (auth()->user()->role_user->role == 'Pengguna')
                                                             <input type="number" class="d-none" name="user_id" value="{{auth()->user()->id}}">
+                                                            @endif
+                                                            <input type="number" class="d-none" name="app_id" value="{{$data->id}}">
                                                             <input name="username" type="text" placeholder="Masukkan Username" class="form-control @error('username') is-invalid @enderror">
                                                             @error('username')
                                                                 <span class="invalid-feedback d-block">{{$message}}</span>
@@ -104,18 +107,6 @@
                                                                 <span class="invalid-feedback d-block">{{$message}}</span>
                                                             @enderror 
                                                         </div>
-                                                        <label>App: </label>
-                                                        <div class="form-group @error('user_id') is-invalid @enderror">
-                                                            <select name="app_id" id="formCategory" class="choices form-select ">
-                                                                <option value="" selected>Open this select menu</option>
-                                                                @foreach ($data_app as $row)
-                                                                <option value="{{$row->id}}">{{$row->app}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            @error('app_id')
-                                                                    <span class="invalid-feedback d-block">{{$message}}</span>
-                                                                @enderror 
-                                                    </div>
                                                     @if (auth()->user()->role_user->role == 'Moderator')
                                                         <label>User:</label>
                                                         <div class="form-group @error('user_id') is-invalid @enderror">
@@ -155,7 +146,7 @@
         <div class="col-12">
             <div class="row">
                 @php
-                    $no = 1;
+                    $no = $data->account->count();
                 @endphp
             @foreach ($data->account as $row)
             <div class="col-6 col-md-6">
@@ -163,7 +154,16 @@
                         <div class="card-body px-4 py-4-5">
                             <div class="row">
                                 <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold text-center">{{$no++}}</h6>
+                                    <h6 class="text-muted font-semibold text-center">{{$no--}}</h6>
+                                    <div class="dropdown text-end">
+                                        <button class="btn dropdown-toggle me-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Edit
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="/account/edit-account/{{$data->slug}}/{{$row->id}}">Edit {{$row->email}}</a>
+                                            <a class="dropdown-item delete" href="#" data-id="{{$row->id}}" data-title="{{$row->email}}">Delete</a>
+                                        </div>
+                                    </div>
                                     <h6 class="text-muted font-semibold">Email : {{$row->email}}</h6>
                                     @if ($row->username != null)
                                     <h6 class="text-muted font-semibold">Username : {{$row->username}}</h6>
@@ -183,6 +183,51 @@
         </div>
     </section>
 </div>
+@push('script')
+
+    <script>
+      $('.delete').click(function () {
+          var id = $(this).attr('data-id');
+          var title = $(this).attr('data-title');
+          const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-success',
+              cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+          })
+          swalWithBootstrapButtons.fire({
+            title: 'Yakin?',
+            text: "Kamu akan menghapus data ini dengan Nama " + title + " ",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location = "/account/delete-account/" + id + ""
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Data '+ title +' has been deleted.',
+                'success'
+              )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Data '+ title +' is safe :)',
+                'error'
+              )
+            }
+          })
+          
+      });
+    </script>
+    @endpush
+
 @push('css')
     <style>
         .form-control-borderless {

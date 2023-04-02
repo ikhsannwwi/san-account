@@ -44,7 +44,14 @@ class viewController extends Controller
     }
 
     public function app_detail($slug){
-        $data = app::where('slug',$slug)->with('account')->first();
+        if (!auth()->user()) {
+            # code...
+        return redirect()->route('login')->with('error','Kamu Belum Login');
+        }
+        $order = 'DESC';
+        $data = app::where('slug',$slug)->with(['account' => function ($q) use ($order) {
+            $q->orderBy('updated_at', $order);
+        }])->first();
 
         if(auth()->user()->role_user->role == 'Moderator'){
             $data_app = app::all();

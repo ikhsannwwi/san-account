@@ -52,12 +52,13 @@ class accountController extends Controller
         if(auth()->user()->role_user->role == 'Moderator'){
             $data_app = app::all();
             $data_user = User::all();
-
+            
         }else if(auth()->user()->role_user->role == 'Pengguna'){
             if(auth()->user()->id != $data->user_id){
             return redirect()->route('admin_account')->with('error', ' Anda Bukan '.$data->user->name);
             }
-            $data_app = app::where('user_id','=',$data->user_id);
+            $data_app = app::where('user_id','=',$data->user_id)->get();
+            $data_user = User::all();
         }
         
         return view('admin.edit.edit-account',compact(
